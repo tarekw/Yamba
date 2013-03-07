@@ -9,7 +9,7 @@ import android.util.Log;
 
 public class YambaApp extends Application implements OnSharedPreferenceChangeListener {
 	static final String TAG = "YambaApp";
-	Twitter twitter;
+	private Twitter twitter;
 	SharedPreferences prefs;	// sharing only within the context of the app not with other apps
 	
 	@Override

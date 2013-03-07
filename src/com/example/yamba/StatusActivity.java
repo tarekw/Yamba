@@ -1,6 +1,5 @@
 package com.example.yamba;
 
-import winterwell.jtwitter.Twitter;
 import winterwell.jtwitter.TwitterException;
 import android.app.Activity;
 import android.content.Intent;
@@ -81,9 +80,7 @@ public class StatusActivity extends Activity {
 		@Override
 		protected String doInBackground(String... params) {
 			try {
-				Twitter twitter = new Twitter("student", "password");
-				twitter.setAPIRootUrl("http://yamba.marakana.com/api");
-				twitter.setStatus(params[0]);
+				((YambaApp) getApplication()).getTwitter().setStatus(params[0]);
 				return "Successfully posted " + params[0];
 			} catch (TwitterException e) {
 				e.printStackTrace();
