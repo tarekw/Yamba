@@ -14,10 +14,6 @@
         android:key="server"
         android:summary="@string/server_summary"
         android:title="@string/server" />
-    <EditTextPreference
-        android:key="delay"
-        android:summary="@string/delay_summary"
-        android:title="@string/updater_delay"
-        android:inputType="number" />
+    <ListPreference android:entries="@array/delay_names" android:key="delay" android:summary="@string/delay_summary" android:title="@string/updater_delay" android:entryValues="@array/delay_values"/>
 
 </PreferenceScreen>

@@ -19,5 +19,16 @@
     <string name="preferences">Preferences</string>
     <string name="updater_delay">Delay</string>
     <string name="delay_summary">How long should be the delay</string>
-
+    <string-array name="delay_names">
+        <item >Every 20 seconds</item>
+        <item >Every 30 seconds</item>
+		<item >Every minute</item>
+        <item >Every five minutes</item>
+    </string-array>
+    <string-array name="delay_values">
+        <item>20</item>
+        <item>30</item>
+        <item>60</item>
+        <item>300</item>
+    </string-array>
 </resources>
