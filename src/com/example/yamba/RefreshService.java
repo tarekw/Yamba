@@ -25,7 +25,7 @@ public class RefreshService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		try {
-			List<Status> timeline = ((YambaApp) getApplication()).twitter.getPublicTimeline();
+			List<Status> timeline = ((YambaApp) getApplication()).getTwitter().getPublicTimeline();
 
 			for (Status status : timeline) {
 				Log.d(TAG, String.format("%s: %s", status.user.name,
@@ -33,7 +33,9 @@ public class RefreshService extends IntentService {
 			}
 		} catch (TwitterException e) {
 			e.printStackTrace();
-		}	
+		} catch (NullPointerException e) {
+			Log.d(TAG, "caught NullPointerException");
+		}
 		Log.d(TAG, "onHandleIntent");
 	}
 

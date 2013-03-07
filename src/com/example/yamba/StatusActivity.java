@@ -48,6 +48,7 @@ public class StatusActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intentUpdater = new Intent(this, UpdaterService.class);
 		Intent intentRefresh = new Intent(this, RefreshService.class);
+		Intent intentPreferencs = new Intent(this, PrefsActivity.class);
 		
 		switch (item.getItemId()) {
 		case R.id.item_start_service:
@@ -58,6 +59,10 @@ public class StatusActivity extends Activity {
 			return true;
 		case R.id.item_refresh_service:
 			startService(intentRefresh);
+			return true;
+		case R.id.item_preferences:
+			startActivity(intentPreferencs);
+			return true;
 		default:
 			return false;
 		}
