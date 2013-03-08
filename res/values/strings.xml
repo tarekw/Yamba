@@ -31,4 +31,5 @@
         <item>60</item>
         <item>300</item>
     </string-array>
+        <string name="timeline">Timeline</string>
 </resources>
