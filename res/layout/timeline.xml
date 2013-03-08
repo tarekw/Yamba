@@ -12,12 +12,23 @@
         android:layout_gravity="center_horizontal"
         android:text="@string/timeline"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    	<ListView
+    	    android:id="@+id/list_out"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" />
+    
 
-    <TextView
-        android:id="@+id/text_out"
+<!-- 	<ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        tools:ignore="SelectableText" />
+        android:layout_height="match_parent">
+        
+    	<TextView
+	        android:id="@+id/text_out"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        tools:ignore="SelectableText" />
+    </ScrollView> -->
 
 </LinearLayout>

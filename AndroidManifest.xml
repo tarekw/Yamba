@@ -19,14 +19,14 @@
         <activity
             android:name="com.example.yamba.StatusActivity"
             android:label="@string/app_name" >
+        </activity>
+        
+        <activity android:name=".TimelineActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <activity android:name=".TimelineActivity"></activity>
         <activity android:name=".PrefsActivity"></activity>
         <service android:name=".UpdaterService"></service>
         <service android:name=".RefreshService"></service>
