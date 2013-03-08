@@ -68,7 +68,7 @@ public class TimelineActivity extends ListActivity {
 		Intent intentUpdater = new Intent(this, UpdaterService.class);
 		Intent intentRefresh = new Intent(this, RefreshService.class);
 		Intent intentPreferencs = new Intent(this, PrefsActivity.class);
-		Intent intentTimeline = new Intent(this, TimelineActivity.class);
+		Intent intentStatusUpdate = new Intent(this, StatusActivity.class);
 		
 		switch (item.getItemId()) {
 		case R.id.item_start_service:
@@ -83,8 +83,8 @@ public class TimelineActivity extends ListActivity {
 		case R.id.item_preferences:
 			startActivity(intentPreferencs);
 			return true;
-		case R.id.item_timeline:
-			startActivity(intentTimeline);
+		case R.id.item_status_update:
+			startActivity(intentStatusUpdate);
 			return true;
 		default:
 			return false;
