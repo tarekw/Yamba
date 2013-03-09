@@ -47,7 +47,6 @@ public class StatusData {
 		return cursor;
 	}
 
-	
 	class DBHelper extends SQLiteOpenHelper {
 
 		public DBHelper() {

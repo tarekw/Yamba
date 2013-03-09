@@ -1,10 +1,14 @@
 package com.example.yamba;
 
 import android.app.ListActivity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,10 +17,12 @@ import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
 
 public class TimelineActivity extends ListActivity {
+	static final String TAG = "TimelineActivity";
 	static final String[] FROM = { StatusData.C_USER, StatusData.C_TEXT, StatusData.C_CREATED_AT };
 	static final int[] TO = { R.id.text_user, R.id.text_tweet, R.id.text_created_at };
 	Cursor cursor;
 	SimpleCursorAdapter adapter;
+	TimelineReceiver receiver;
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -41,6 +47,21 @@ public class TimelineActivity extends ListActivity {
 		}
 */	}
 	
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (receiver == null)
+			receiver = new TimelineReceiver();
+		registerReceiver(receiver, new IntentFilter(YambaApp.ACTION_NEW_STATUS));
+	}	
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		unregisterReceiver(receiver);
+	}
+
 	static final ViewBinder VIEW_BINDER = new ViewBinder() {
 
 		@Override
@@ -89,5 +110,16 @@ public class TimelineActivity extends ListActivity {
 		default:
 			return false;
 		}
+	}
+	
+	class TimelineReceiver extends BroadcastReceiver {
+		static final String TAG = "TimelineReceiver";
+		@Override
+		public void onReceive(Context context, Intent intent) {			
+			cursor = ((YambaApp)getApplication()).statusData.query();
+			adapter.changeCursor(cursor);
+			Log.d(TAG, "onReceive with count :" + intent.getIntExtra("count", 0));
+		}
+		
 	}
 }
