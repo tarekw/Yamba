@@ -7,13 +7,19 @@
         android:title="@string/username" />
     <EditTextPreference
         android:key="password"
+        android:password="true"
         android:summary="@string/password_summary"
-        android:title="@string/password"
-        android:password="true" />
+        android:title="@string/password" />
     <EditTextPreference
         android:key="server"
         android:summary="@string/server_summary"
         android:title="@string/server" />
-    <ListPreference android:entries="@array/delay_names" android:key="delay" android:summary="@string/delay_summary" android:title="@string/updater_delay" android:entryValues="@array/delay_values"/>
+
+    <ListPreference
+        android:entries="@array/delay_names"
+        android:entryValues="@array/delay_values"
+        android:key="delay"
+        android:summary="@string/delay_summary"
+        android:title="@string/updater_delay" />
 
 </PreferenceScreen>

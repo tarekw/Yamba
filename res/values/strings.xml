@@ -6,7 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="update_status">Update status</string>
     <string name="status_title">Status</string>
-    <string name="status_hint">enter your status update here...</string>
+    <string name="status_hint">enter your status update here</string>
     <string name="start_service">Start Service</string>
     <string name="stop_service">Stop Service</string>
     <string name="refresh_service">Refresh Service</string>
@@ -19,17 +19,26 @@
     <string name="preferences">Preferences</string>
     <string name="updater_delay">Delay</string>
     <string name="delay_summary">How long should be the delay</string>
+
     <string-array name="delay_names">
-        <item >Every 20 seconds</item>
-        <item >Every 30 seconds</item>
-		<item >Every minute</item>
-        <item >Every five minutes</item>
+        <item>Every 30 seconds</item>
+        <item>Every fifteen minutes</item>
+        <item>Every half hour</item>
+        <item>Every hour</item>
+        <item>Every half day</item>
+        <item>Once a day</item>
+        <item>Never</item>
     </string-array>
     <string-array name="delay_values">
-        <item>20</item>
-        <item>30</item>
-        <item>60</item>
-        <item>300</item>
+        <item>30000</item>
+        <item>900000</item>
+        <item>180000</item>
+        <item>3600000</item>
+        <item>43200000</item>
+        <item>86400000</item>
+        <item>0</item>
     </string-array>
-        <string name="timeline">Timeline</string>
+
+    <string name="timeline">Timeline</string>
+
 </resources>

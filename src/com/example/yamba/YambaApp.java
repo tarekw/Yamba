@@ -15,6 +15,8 @@ import android.util.Log;
 public class YambaApp extends Application implements OnSharedPreferenceChangeListener {
 	static final String TAG = "YambaApp";
 	public static final String ACTION_NEW_STATUS = "com.example.yamba.NEW_STATUS";
+	public static final String ACTION_REFRESH = "com.example.yamba.REFRESH";
+	public static final String ACTION_REFRESH_ALARM = "com.example.yamba.REFRESH_ALARM";
 	private Twitter twitter;
 	SharedPreferences prefs;	// sharing only within the context of the app not with other apps
 	StatusData statusData;
@@ -45,11 +47,12 @@ public class YambaApp extends Application implements OnSharedPreferenceChangeLis
 		return twitter;
 	}
 
+	static final Intent refreshAlarm = new Intent(ACTION_REFRESH_ALARM);
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences arg0, String key) {
 		twitter = null;
-		Log.d(TAG, "onSharedPreferencesChanged for key: " + key);
-		
+		sendBroadcast(refreshAlarm);
+		Log.d(TAG, "onSharedPreferencesChanged for key: " + key);		
 	}
 	
 	// TODO: the count logic is broken, but the update works

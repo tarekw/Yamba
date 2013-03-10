@@ -28,7 +28,7 @@ public class UpdaterService extends Service {
 						((YambaApp) getApplication()).pullAndInsert();
 						
 						int delay = Integer.parseInt(((YambaApp) getApplication()).prefs.getString("delay", "30"));
-						Thread.sleep(delay * 1000);
+						Thread.sleep(delay);
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
