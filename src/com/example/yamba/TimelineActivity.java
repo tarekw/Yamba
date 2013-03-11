@@ -1,10 +1,13 @@
 package com.example.yamba;
 
 import android.app.ListActivity;
+import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.format.DateUtils;
@@ -16,27 +19,30 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
 
-public class TimelineActivity extends ListActivity {
+public class TimelineActivity extends ListActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 	static final String TAG = "TimelineActivity";
 	static final String[] FROM = { StatusProvider.C_USER, StatusProvider.C_TEXT, StatusProvider.C_CREATED_AT };
 	static final int[] TO = { R.id.text_user, R.id.text_tweet, R.id.text_created_at };
-	Cursor cursor;
-	SimpleCursorAdapter adapter;
-	TimelineReceiver receiver;
+	static final int STATUS_LOADER = 47;
+//	Cursor cursor;
+	private SimpleCursorAdapter adapter;
+	private TimelineReceiver receiver;
 	
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 //		setContentView(R.layout.timeline);
 //		listOut = (ListView) findViewById(R.id.list_out);
 		
 //		cursor = ((YambaApp)getApplication()).StatusProvider.query();
-		cursor = getContentResolver().query(StatusProvider.CONTENT_URI, null, null, null, StatusProvider.C_CREATED_AT + " DESC");
+//		cursor = getContentResolver().query(StatusProvider.CONTENT_URI, null, null, null, StatusProvider.C_CREATED_AT + " DESC");
+//		cursor = managedQuery(StatusProvider.CONTENT_URI, null, null, null, StatusProvider.C_CREATED_AT + " DESC");
 		
-		adapter = new SimpleCursorAdapter(this, R.layout.row, cursor, FROM, TO);
+		adapter = new SimpleCursorAdapter(this, R.layout.row, null, FROM, TO);
 		adapter.setViewBinder(VIEW_BINDER);
+		getLoaderManager().initLoader(STATUS_LOADER, null, this);
 		
 		setTitle(R.string.timeline);
 		setListAdapter(adapter);
@@ -118,11 +124,29 @@ public class TimelineActivity extends ListActivity {
 		@Override
 		public void onReceive(Context context, Intent intent) {			
 //			cursor = ((YambaApp)getApplication()).StatusProvider.query();
-			cursor = context.getContentResolver().query(StatusProvider.CONTENT_URI, null, null, null, StatusProvider.C_CREATED_AT + " DESC");
-
-			adapter.changeCursor(cursor);
+//			cursor = context.getContentResolver().query(StatusProvider.CONTENT_URI, null, null, null, StatusProvider.C_CREATED_AT + " DESC");
+//			adapter.changeCursor(cursor);
+			getLoaderManager().restartLoader(STATUS_LOADER, null, TimelineActivity.this);
 			Log.d(TAG, "onReceive with count :" + intent.getIntExtra("count", 0));
 		}
 		
+	}
+
+	// LoaderManager.LoaderCallbacks
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		return new CursorLoader(this, StatusProvider.CONTENT_URI, null, null, null, StatusProvider.C_CREATED_AT + " DESC");
+	}
+
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
+		adapter.swapCursor(cursor);
+	}
+
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> arg0) {
+		adapter.swapCursor(null);
 	}
 }
