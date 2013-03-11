@@ -29,7 +29,7 @@ public class YambaApp extends Application implements OnSharedPreferenceChangeLis
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
 		
-		statusData = new StatusData(this);
+//		statusData = new StatusData(this);
 		
 		Log.d(TAG, "onCreated");
 	}
@@ -63,7 +63,9 @@ public class YambaApp extends Application implements OnSharedPreferenceChangeLis
 			List<Status> timeline = getTwitter().getPublicTimeline();
 
 			for (Status status : timeline) {
-				statusData.insert(status);
+//				statusData.insert(status);
+				getContentResolver().insert(StatusProvider.CONTENT_URI, StatusProvider.statusToValues(status));
+				
 				if (status.createdAt.getTime()>lastTimeStampSeen) {
 					count++;
 					lastTimeStampSeen = status.createdAt.getTime();

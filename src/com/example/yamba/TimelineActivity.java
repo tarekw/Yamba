@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 public class TimelineActivity extends ListActivity {
 	static final String TAG = "TimelineActivity";
-	static final String[] FROM = { StatusData.C_USER, StatusData.C_TEXT, StatusData.C_CREATED_AT };
+	static final String[] FROM = { StatusProvider.C_USER, StatusProvider.C_TEXT, StatusProvider.C_CREATED_AT };
 	static final int[] TO = { R.id.text_user, R.id.text_tweet, R.id.text_created_at };
 	Cursor cursor;
 	SimpleCursorAdapter adapter;
@@ -32,7 +32,8 @@ public class TimelineActivity extends ListActivity {
 //		setContentView(R.layout.timeline);
 //		listOut = (ListView) findViewById(R.id.list_out);
 		
-		cursor = ((YambaApp)getApplication()).statusData.query();
+//		cursor = ((YambaApp)getApplication()).StatusProvider.query();
+		cursor = getContentResolver().query(StatusProvider.CONTENT_URI, null, null, null, StatusProvider.C_CREATED_AT + " DESC");
 		
 		adapter = new SimpleCursorAdapter(this, R.layout.row, cursor, FROM, TO);
 		adapter.setViewBinder(VIEW_BINDER);
@@ -41,8 +42,8 @@ public class TimelineActivity extends ListActivity {
 		setListAdapter(adapter);
 		
 /*		while (cursor.moveToNext()) {
-			String user = cursor.getString(cursor.getColumnIndex(StatusData.C_USER));
-			String text = cursor.getString(cursor.getColumnIndex(StatusData.C_TEXT));
+			String user = cursor.getString(cursor.getColumnIndex(StatusProvider.C_USER));
+			String text = cursor.getString(cursor.getColumnIndex(StatusProvider.C_TEXT));
 			textOut.append(String.format("%s, %s\n", user, text));
 		}
 */	}
@@ -67,9 +68,9 @@ public class TimelineActivity extends ListActivity {
 		@Override
 		public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
 			if (view.getId() != R.id.text_created_at) return false;
-//			if (cursor.getColumnIndex(StatusData.C_CREATED_AT) != columnIndex) return false;
+//			if (cursor.getColumnIndex(StatusProvider.C_CREATED_AT) != columnIndex) return false;
 			
-			long time = cursor.getLong(cursor.getColumnIndex(StatusData.C_CREATED_AT));
+			long time = cursor.getLong(cursor.getColumnIndex(StatusProvider.C_CREATED_AT));
 			CharSequence relativeTime = DateUtils.getRelativeTimeSpanString(time);
 			((TextView)view).setText(relativeTime);
 			
@@ -116,7 +117,9 @@ public class TimelineActivity extends ListActivity {
 		static final String TAG = "TimelineReceiver";
 		@Override
 		public void onReceive(Context context, Intent intent) {			
-			cursor = ((YambaApp)getApplication()).statusData.query();
+//			cursor = ((YambaApp)getApplication()).StatusProvider.query();
+			cursor = context.getContentResolver().query(StatusProvider.CONTENT_URI, null, null, null, StatusProvider.C_CREATED_AT + " DESC");
+
 			adapter.changeCursor(cursor);
 			Log.d(TAG, "onReceive with count :" + intent.getIntExtra("count", 0));
 		}
