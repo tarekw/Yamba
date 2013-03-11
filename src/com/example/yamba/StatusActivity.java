@@ -3,6 +3,9 @@ package com.example.yamba;
 import winterwell.jtwitter.TwitterException;
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,9 +15,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class StatusActivity extends Activity {
-	
+public class StatusActivity extends Activity implements LocationListener {
+	static final String TAG = "StatusActivity";
+	static final String PROVIDER = LocationManager.GPS_PROVIDER;
 	EditText editStatus;
+	LocationManager locationManager;
+	Location location;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +31,9 @@ public class StatusActivity extends Activity {
 		setContentView(R.layout.activity_status);
 		
 		editStatus = (EditText) findViewById(R.id.edit_status);
+		
+		locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+		location = locationManager.getLastKnownLocation(PROVIDER);
 	}
 
 	@Override
@@ -34,7 +43,19 @@ public class StatusActivity extends Activity {
 //		Debug.stopMethodTracing();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		locationManager.requestLocationUpdates(PROVIDER, 30000, 1000, this);
+		Log.d(TAG, "onResume");
+	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		locationManager.removeUpdates(this);
+		Log.d(TAG, "onPause");
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -97,6 +118,28 @@ public class StatusActivity extends Activity {
 			super.onPostExecute(result);
 			Toast.makeText(StatusActivity.this, result, Toast.LENGTH_LONG).show();
 		}
+	}
+
+	// LocationListener callbacks
+	@Override
+	public void onLocationChanged(Location location) {
+		this.location = location;
+		Log.d(TAG, "onLocationChanged: " + location.toString());
+	}
+
+	@Override
+	public void onProviderDisabled(String arg0) {
+		Log.d(TAG, "onProviderDisabled");
+	}
+
+	@Override
+	public void onProviderEnabled(String arg0) {
+		Log.d(TAG, "onProviderEnabled");
+	}
+
+	@Override
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+		Log.d(TAG, "onStatusChanged");
 	}
 }
 
