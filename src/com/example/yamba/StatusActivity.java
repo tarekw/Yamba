@@ -38,7 +38,7 @@ public class StatusActivity extends Activity implements LocationListener {
 		
 		locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
 		location = locationManager.getLastKnownLocation(PROVIDER);
-		dialogViewer = DialogViewer.newInstance();
+		dialogViewer = DialogViewer.newInstance(R.layout.progress_indicator);
 	}
 
 	@Override
@@ -146,11 +146,6 @@ public class StatusActivity extends Activity implements LocationListener {
 	}
 	
 	void hideDialog() {
-	    FragmentTransaction ft = getFragmentManager().beginTransaction();
-	    Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-	    if (prev != null) {
-	        ft.remove(prev);
-	    }
 	    dialogViewer.dismiss();
 	}
 	
