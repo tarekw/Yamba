@@ -41,4 +41,6 @@
 
     <string name="timeline">Timeline</string>
 
+    <string name="updating_status">Updating Status</string>
+
 </resources>

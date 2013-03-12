@@ -2,6 +2,9 @@ package com.example.yamba;
 
 import winterwell.jtwitter.TwitterException;
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -21,6 +24,7 @@ public class StatusActivity extends Activity implements LocationListener {
 	EditText editStatus;
 	LocationManager locationManager;
 	Location location;
+	DialogFragment dialogViewer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,7 @@ public class StatusActivity extends Activity implements LocationListener {
 		
 		locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
 		location = locationManager.getLastKnownLocation(PROVIDER);
+		dialogViewer = DialogViewer.newInstance();
 	}
 
 	@Override
@@ -97,6 +102,8 @@ public class StatusActivity extends Activity implements LocationListener {
 		Log.d("StatusActivity", "Status text" + statusText);
 		Log.d("StatusActivity", "onClicked!");
 		
+//		setContentView(R.layout.progress_indicator);
+		showDialog();
 		new PostToTwitter().execute(statusText);
 	}
 
@@ -116,10 +123,37 @@ public class StatusActivity extends Activity implements LocationListener {
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
+//			setContentView(R.layout.activity_status);
+			hideDialog();
 			Toast.makeText(StatusActivity.this, result, Toast.LENGTH_LONG).show();
 		}
 	}
 
+	void showDialog() {
+
+	    // DialogFragment.show() will take care of adding the fragment
+	    // in a transaction.  We also want to remove any currently showing
+	    // dialog, so make our own transaction and take care of that here.
+	    FragmentTransaction ft = getFragmentManager().beginTransaction();
+	    Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+	    if (prev != null) {
+	        ft.remove(prev);
+	    }
+	    ft.addToBackStack(null);
+
+	    // Show the dialog.
+	    dialogViewer.show(ft, "dialog");
+	}
+	
+	void hideDialog() {
+	    FragmentTransaction ft = getFragmentManager().beginTransaction();
+	    Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+	    if (prev != null) {
+	        ft.remove(prev);
+	    }
+	    dialogViewer.dismiss();
+	}
+	
 	// LocationListener callbacks
 	@Override
 	public void onLocationChanged(Location location) {
